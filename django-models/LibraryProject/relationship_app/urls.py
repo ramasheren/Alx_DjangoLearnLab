@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import add_book, edit_book, delete_book
+from . import views
 
 urlpatterns = [
-    path('books/add/', add_book, name='add_book'),
-    path('books/edit/<int:pk>/', edit_book, name='edit_book'),
-    path('books/delete/<int:pk>/', delete_book, name='delete_book'),
+    # Custom permission-based views for book management
+    path('books/add/', views.add_book, name='add_book'),
+    path('books/edit/<int:pk>/', views.edit_book, name='edit_book'),
+    path('books/delete/<int:pk>/', views.delete_book, name='delete_book'),
 ]
