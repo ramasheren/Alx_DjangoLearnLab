@@ -1,7 +1,7 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "LibraryProject.settings")
 django.setup()
 
 from relationship_app.models import Author, Book, Library, Librarian
@@ -37,4 +37,3 @@ for book in library_instance.books.all():
 # ✅ REQUIRED: Librarian.objects.get(library=...)
 librarian_for_library = Librarian.objects.get(library=library_instance)
 print(f"\nLibrarian of {library_name}: {librarian_for_library.name}")
-

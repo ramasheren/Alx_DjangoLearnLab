@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 # Author model
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
@@ -11,6 +12,7 @@ class Author(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+
 # Library model
 class Library(models.Model):
     name = models.CharField(max_length=100)
@@ -18,6 +20,7 @@ class Library(models.Model):
 
     def __str__(self):
         return self.name
+
 
 # Book model with ForeignKey and custom permissions
 class Book(models.Model):
@@ -36,6 +39,7 @@ class Book(models.Model):
             ("can_delete_book", "Can delete book"),
         ]
 
+
 # Librarian model (OneToOne relationship with User and ForeignKey to Library)
 class Librarian(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -43,6 +47,7 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.user.username
+
 
 # Member model (OneToOne with User and ManyToMany to Book)
 class Member(models.Model):
@@ -52,12 +57,13 @@ class Member(models.Model):
     def __str__(self):
         return self.user.username
 
+
 # UserProfile for role-based access
 class UserProfile(models.Model):
     ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Librarian', 'Librarian'),
-        ('Member', 'Member'),
+        ("Admin", "Admin"),
+        ("Librarian", "Librarian"),
+        ("Member", "Member"),
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -66,9 +72,9 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.role}"
 
+
 # Automatically create UserProfile when User is created
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance, role='Member')  # Default role
-
+        UserProfile.objects.create(user=instance, role="Member")  # Default role
