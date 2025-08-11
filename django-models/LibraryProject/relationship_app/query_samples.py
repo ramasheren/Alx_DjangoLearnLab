@@ -1,39 +1,35 @@
-import os
-import django
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "LibraryProject.settings")
-django.setup()
-
 from relationship_app.models import Author, Book, Library, Librarian
 
-# Create sample data
-author_name = "J.K. Rowling"
-author = Author.objects.create(name=author_name)
+# 1. Query all books by a specific author
+def books_by_author(author_name):
+    author = Author.objects.get(name=author_name)
+    books = Book.objects.filter(author=author)
+    print(f"Books by {author_name}:")
+    for book in books:
+        print(f"- {book.title}")
 
-book1 = Book.objects.create(title="HP1", author=author)
-book2 = Book.objects.create(title="HP2", author=author)
+# 2. List all books in a library
+def books_in_library(library_name):
+    library = Library.objects.get(name=library_name)
+    books = library.books.all()
+    print(f"Books in the library {library_name}:")
+    for book in books:
+        print(f"- {book.title}")
 
-library_name = "My Library"
-library = Library.objects.create(name=library_name)
-library.books.add(book1, book2)
+# 3. Retrieve the librarian for a library
+def librarian_for_library(library_name):
+    library = Library.objects.get(name=library_name)
+    librarian = Librarian.objects.get(library=library)
+    print(f"The librarian for {library_name} is {librarian.name}")
 
-librarian = Librarian.objects.create(name="Sarah", library=library)
+# Test the queries
+if __name__ == "__main__":
+    # Query 1: Books by a specific author (change 'Author Name' to an existing author)
+    books_by_author('Author Name')
 
-# ✅ REQUIRED: Author.objects.get(name=author_name)
-author = Author.objects.get(name=author_name)
+    # Query 2: Books in a specific library (change 'Library Name' to an existing library)
+    books_in_library('Library Name')
 
-# ✅ REQUIRED: Book.objects.filter(author=author)
-books_by_author = Book.objects.filter(author=author)
-print("Books by J.K. Rowling:")
-for book in books_by_author:
-    print(f"- {book.title}")
-
-# ✅ REQUIRED: Library.objects.get(name=library_name)
-library_instance = Library.objects.get(name=library_name)
-print(f"\nBooks in {library_name}:")
-for book in library_instance.books.all():
-    print(f"- {book.title}")
-
-# ✅ REQUIRED: Librarian.objects.get(library=...)
-librarian_for_library = Librarian.objects.get(library=library_instance)
-print(f"\nLibrarian of {library_name}: {librarian_for_library.name}")
+    # Query 3: Librarian for a specific library (change 'Library Name' to an existing library)
+    librarian_for_library('Library Name')
+    
